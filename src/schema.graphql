@@ -1,0 +1,82 @@
+type Query {
+    add(a: Float!, b: Float!): Float!
+    add2(numbers:[Float!]!): Float!
+    grades:[Int!]!
+    greeting(name: String): String!
+    me: User!
+    post(id:ID!): Post!
+    users(      query:String  after:String  skip:Int  first:Int  orderBy:UserOrderByInput ): [User!]!
+    posts(      query:String  after:String  skip:Int  first:Int  orderBy:PostOrderByInput ): [Post!]!
+    myPosts(    query:String  after:String  skip:Int  first:Int  orderBy:PostOrderByInput ): [Post!]!
+    comments(   query:String  after:String  skip:Int  first:Int  orderBy:CommentOrderByInput ): [Comment!]!
+}
+
+type Mutation {
+    createUser(data:CreateUserInput!): AuthPayload!
+    login(data: LoginUserInput!): AuthPayload!
+    updateUser(data:UpdateUserInput!): User!
+    deleteUser: User!
+    createPost(data:CreatePostInput!): Post!
+    updatePost(id:ID!, data:UpdatePostInput!): Post!
+    deletePost(id:ID!): Post!
+    createComment(data:CreateCommentInput!): Comment!
+    updateComment(id:ID!, data:UpdateCommentInput!): Comment!
+    deleteComment(id:ID!): Comment!
+}
+
+input CreateUserInput { name:String! email:String! password:String!}
+input LoginUserInput {email:String!, password:String!}
+input UpdateUserInput { name:String email:String password: String}
+input CreatePostInput { title:String! body:String! published:Boolean! }
+input UpdatePostInput { title:String body:String published:Boolean }
+input CreateCommentInput { text:String! post:ID! }
+input UpdateCommentInput { text:String }
+
+type Subscription {
+    comment(postId:ID!): CommentSubscriptionPayload!
+    post: PostSubscriptionPayload!
+    myPost: PostSubscriptionPayload!
+}
+
+
+# import UserOrderByInput, PostOrderByInput, CommentOrderByInput from './generated/prisma.graphql'
+type User {
+    id: ID!
+    name: String!
+    email: String
+    password: String!
+    posts(query: String): [Post!]!
+    comments(query: String): [Comment!]!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type AuthPayload {
+    token: String!
+    user: User!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    body: String!
+    published: Boolean!
+    author: User!
+    comments: [Comment!]!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum MutationType {CREATED UPDATED DELETED}
+
+type PostSubscriptionPayload { mutation: MutationType! node: Post }
+type CommentSubscriptionPayload { mutation: MutationType! node: Comment }
+
+type Comment {
+    id: ID!
+    text: String!
+    author: User!
+    post: Post!
+    createdAt: String!
+    updatedAt: String!
+}
