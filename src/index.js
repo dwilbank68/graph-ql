@@ -1,5 +1,5 @@
 // npm i graphql-yoga@1.14.10
-import "@babel/polyfill";
+import "@babel/polyfill/noConflict";
 // in npm start scripts, babel-node has polyfill for dev mode, straight babel doesn't.
 // So we include it here for prod mode.
 import {GraphQLServer} from 'graphql-yoga';
