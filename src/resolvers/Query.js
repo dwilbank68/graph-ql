@@ -3,7 +3,13 @@ import getUserId from '../utils/getUserId.js';
 const Query = {
 
     me: async (parent, args, {prisma, req}, info) => {
+        // console.log('------------------------------------------');
+        // console.log('req ',req);
+        // console.log('------------------------------------------');
         const userId = getUserId(req)
+        console.log('------------------------------------------');
+        console.log('userId ',userId);
+        console.log('------------------------------------------');
         return prisma.query.user({where:{id:userId}}, info)
     },
     post: async (parent, args, {prisma, req}, info) => {

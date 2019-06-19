@@ -6,7 +6,13 @@ const getUserId = (req, requireAuth=true) => {
         req.connection.context.Authorization;
     if (header) {
         const token = header.replace('Bearer ', '');
-        const decoded = jwt.verify(token, 'jwtSecret')
+        console.log('------------------------------------------');
+        console.log('process.env.JWT_SECRET ',process.env.JWT_SECRET);
+        console.log('------------------------------------------');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        console.log('------------------------------------------');
+        console.log('decoded ',decoded);
+        console.log('------------------------------------------');
         return decoded.userId;
     }
     // if no auth header provided and requireAuth is true
